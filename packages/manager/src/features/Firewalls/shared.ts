@@ -5,7 +5,13 @@ import {
 import { Item } from 'src/components/EnhancedSelect/Select';
 import { truncateAndJoinList } from 'src/utilities/stringUtils';
 
-export type FirewallPreset = 'ssh' | 'http' | 'https' | 'mysql' | 'dns';
+export type FirewallPreset =
+  | 'ssh'
+  | 'http'
+  | 'https'
+  | 'mysql'
+  | 'dns'
+  | 'gopher';
 
 // Predefined Firewall options for Select components (long-form).
 export const firewallOptionItemsLong = [
@@ -28,6 +34,10 @@ export const firewallOptionItemsLong = [
   {
     label: 'DNS (TCP 53 - All IPv4, All IPv6)',
     value: 'dns',
+  },
+  {
+    label: 'GOPHER (TCP 70 - All IPv4, All IPv6)',
+    value: 'gopher',
   },
 ];
 
@@ -53,6 +63,10 @@ export const firewallOptionItemsShort = [
     label: 'DNS',
     value: 'dns',
   },
+  {
+    label: 'GOPHER',
+    value: 'gopher',
+  },
 ];
 
 export const protocolOptions: Item<FirewallRuleProtocol>[] = [
@@ -74,6 +88,7 @@ export const portPresets: Record<FirewallPreset, string> = {
   https: '443',
   mysql: '3306',
   dns: '53',
+  gopher: '70',
 };
 
 export const allIPv4 = '0.0.0.0/0';
@@ -150,6 +165,18 @@ export const predefinedFirewalls: Record<FirewallPreset, PredefinedFirewall> = {
       },
     ],
   },
+  gopher: {
+    label: 'GOPHER',
+    inbound: [
+      {
+        label: `accept-inbound-GOPHER`,
+        ports: portPresets.gopher,
+        protocol: 'TCP',
+        addresses: allIPs,
+        action: 'ACCEPT',
+      },
+    ],
+  },
 };
 
 export const predefinedFirewallFromRule = (
@@ -178,6 +205,8 @@ export const predefinedFirewallFromRule = (
       return 'mysql';
     case portPresets.dns:
       return 'dns';
+    case portPresets.gopher:
+      return 'gopher';
     default:
       return undefined;
   }

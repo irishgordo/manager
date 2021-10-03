@@ -44,6 +44,10 @@ describe('predefinedFirewallFromRule', () => {
     rule.ports = '53';
     expect(predefinedFirewallFromRule(rule)).toBe('dns');
   });
+  it('handles GOPHER', () => {
+    rule.ports = '70';
+    expect(predefinedFirewallFromRule(rule)).toBe('gopher');
+  });
 
   it('returns `undefined` when given an unrecognizable rule', () => {
     expect(

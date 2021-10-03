@@ -23,6 +23,7 @@ export const PORT_PRESETS = {
   '443': { label: 'HTTPS (443)', value: '443' },
   '3306': { label: 'MySQL (3306)', value: '3306' },
   '22': { label: 'SSH (22)', value: '22' },
+  '70': { label: 'GOPHER (70)', value: '70' },
   CUSTOM: { label: 'Custom', value: 'CUSTOM' },
 };
 
