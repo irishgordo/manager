@@ -38,10 +38,11 @@ export interface Flags {
   referralBannerText: ReferralBannerText;
   blockStorageAvailability: boolean;
   imagesPriceInfo: boolean;
-  productInformationBanners: ProductInformationBannerFlag[];
   apiMaintenance: APIMaintenance;
+  productInformationBanners: ProductInformationBannerFlag[];
+  lkeHighAvailability: boolean;
   autoscaler: boolean;
-  deprecateLinodeDomainBanner: boolean;
+  kubernetesDashboardAvailability: boolean;
 }
 
 type PromotionalOfferFeature =
@@ -90,7 +91,7 @@ export interface Provider {
   href: string;
 }
 
-export type AdditionalPaymentMethod = 'google_pay';
+export type AdditionalPaymentMethod = 'google_pay' | 'paypal';
 
 export interface ImagesPricingBanner {
   key: string;

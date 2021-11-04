@@ -1,4 +1,5 @@
-name: E2E Tests
+name: Run Tests On PR
+concurrency: UI_TESTS
 env:
   USER_1: ${{ secrets.USER_1 }}
   USER_2: ${{ secrets.USER_2 }}
@@ -6,18 +7,12 @@ env:
   USER_4: ${{ secrets.USER_4 }}
   CLIENT_ID: ${{ secrets.REACT_APP_CLIENT_ID }}
 on:
-  schedule:
-    - cron: "0 13 * * 1-5"
   pull_request_target:
     types: [labeled, synchronize]
-  push:
-    branches:
-      - develop
-      - staging
 
 jobs:
-  run-cypress-e2e:
-    if: (github.event == 'pull_request' && contains(github.event.pull_request.labels.*.name, 'e2e')) || (github.ref == 'refs/heads/develop' || github.ref == 'refs/heads/staging')
+  run-cypress-e2e-pr:
+    if: contains(github.event.pull_request.labels.*.name, 'e2e')
     runs-on: ubuntu-latest
     strategy:
       fail-fast: false
@@ -25,6 +20,8 @@ jobs:
         user: ["USER_1", "USER_2", "USER_3", "USER_4"]
     steps:
       - uses: actions/checkout@v2
+        with:
+          ref: ${{ github.event.pull_request.head.sha }}
       - uses: actions/setup-node@v1
         with:
           node-version: "14.17.4"

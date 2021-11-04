@@ -507,6 +507,11 @@ const themeDefaults: ThemeDefaults = () => {
       hidden: visuallyHidden,
     },
     overrides: {
+      MuiCheckbox: {
+        root: {
+          color: '#ccc',
+        },
+      },
       MuiAppBar: {
         colorDefault: {
           backgroundColor: 'inherit',
@@ -1126,10 +1131,7 @@ const themeDefaults: ThemeDefaults = () => {
           color: '#606469',
           backgroundColor: 'white',
           borderLeft: `6px solid transparent`,
-          borderRadius: 0,
-          [breakpoints.up('md')]: {
-            borderRadius: 0,
-          },
+          borderRadius: 4,
         },
       },
       MuiSvgIcon: {
