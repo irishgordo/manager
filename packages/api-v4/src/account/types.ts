@@ -14,7 +14,7 @@ export interface Account {
   email: string;
   first_name: string;
   tax_id: string;
-  credit_card: CreditCard;
+  credit_card: CreditCardData;
   state: string;
   zip: string;
   address_1: string;
@@ -85,12 +85,6 @@ export type CardType =
   | 'JCB';
 
 export type PaymentType = 'credit_card' | ThirdPartyPayment;
-
-export interface CreditCard {
-  expiry: string | null;
-  last_four: string | null;
-  card_type?: CardType;
-}
 
 export interface Invoice {
   id: number;
@@ -202,7 +196,9 @@ export type NotificationType =
   | 'ticket_abuse'
   | 'notice'
   | 'promotion'
-  | 'user_email_bounce';
+  | 'user_email_bounce'
+  | 'volume_migration_scheduled'
+  | 'volume_migration_imminent';
 
 export type NotificationSeverity = 'minor' | 'major' | 'critical';
 
@@ -313,7 +309,9 @@ export type EventAction =
   | 'volume_detach'
   | 'volume_attach'
   | 'volume_resize'
-  | 'volume_clone';
+  | 'volume_clone'
+  | 'volume_migrate_scheduled'
+  | 'volume_migrate';
 
 export type EventStatus =
   | 'scheduled'
@@ -386,7 +384,7 @@ export interface SaveCreditCardData {
 export interface AccountMaintenance {
   reason: string;
   status: 'pending' | 'started';
-  type: 'reboot' | 'cold_migration' | 'live_migration';
+  type: 'reboot' | 'cold_migration' | 'live_migration' | 'volume_migration';
   when: string;
   entity: {
     id: number;
@@ -396,19 +394,38 @@ export interface AccountMaintenance {
   };
 }
 
-export interface PaymentMethod {
-  id: number;
-  type: PaymentType;
-  is_default: boolean;
-  created: string;
-  data: CreditCard;
+export interface PayPalData {
+  paypal_id: string;
+  email: string;
 }
+
+export interface CreditCardData {
+  expiry: string | null;
+  last_four: string | null;
+  card_type?: CardType;
+}
+
+export type PaymentMethod =
+  | {
+      id: number;
+      type: 'credit_card' | 'google_pay';
+      is_default: boolean;
+      created: string;
+      data: CreditCardData;
+    }
+  | {
+      id: number;
+      type: 'paypal';
+      is_default: boolean;
+      created: string;
+      data: PayPalData;
+    };
 
 export interface ClientToken {
   client_token: string;
 }
 
-export interface PaymentMethodData {
+export interface PaymentMethodPayload {
   type: 'credit_card' | 'payment_method_nonce';
   data: SaveCreditCardData | { nonce: string };
   is_default: boolean;
